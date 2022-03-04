@@ -1,1 +1,27 @@
-module.exports.config={name:"covid",version:"1.0.0",hasPermssion:0,credits:"ManhG",description:"Lấy thông tin về tình hình dịch bệnh COVID-19",commandCategory:"news",cooldowns:5,dependencies:{axios:""}},module.exports.run=async function({api:t,event:n,getText:e}){const a=global.nodemodule.axios;var o=require("moment-timezone").tz("Asia/Ho_Chi_Minh").format("YYYY");let i=await a.get("https://static.pipezero.com/covid/data.json");var r=(await i.data).total,s=(await i.data).overview[6],d=s.date+"-"+o,h=r.world,g=h.cases,c=h.death,v=h.recovered,m=s.cases,p=s.death,$=s.recovered,l=s.treating,u=s.avgCases7day,y=s.avgRecovered7day,w=s.avgDeath7day,M=Math.round(100*p/m),x=Math.round(100*$/m),C=Math.round(100*c/g),S=Math.round(100*v/g),T=(100-(x=x.toString().split(".")[0])-M).toString().split(".")[0];return M=M.toString().split(".")[0],S=S.toString().split(".")[0],C=C.toString().split(".")[0],t.sendMessage(`====== Thế Giới ======\n😷 Nhiễm: ${g}\n💚 Hồi phục: ${v} (${S}%)\n💀 Tử vong: ${c} (${C}%)\n====== Việt Nam ======\n😷 Nhiễm: ${m}\n💉 Đang điều trị: ${l} (${T}%)\n💚 Hồi phục: ${$} (${x}%)\n💀 Tử vong: ${p} (${M}%)\n🤨 Nhiễm 7 ngày: ${u}\n❤ Hồi phục 7 ngày: ${y}\n☠️ Tử vong 7 ngày: ${w}\n\nCập nhật: ${d}`,n.threadID,n.messageID)};
+module.exports.config = {
+	name: "covid",
+	version: "1.0.3",
+	hasPermssion: 0,
+	credits: "Mirai Team",
+	description: "Lấy thông tin về tình hình dịch bệnh COVID-19",
+	commandCategory: "other",
+	cooldowns: 5,
+	dependencies: {
+		"axios": ""
+	}
+};
+
+module.exports.languages = {
+	"vi": {
+		"return": "====== Thế Giới ======\n😷 Nhiễm: %1\n💚 Đã hồi phục: %2\n💀 Tử vong: %3\n====== Việt Nam ======\n😷 Nhiễm: %4\n💚 Đã hồi phục: %5\n💀 Tử vong: %6\n📰 Tin tức mới nhất: %7\nDữ liệu được cập nhật vào lúc: %8 (UTC +7)"
+	},
+	"en": {
+		"return": "====== World ======\n😷 Cases: %1\n💚 Recovered: %2\n💀 Deaths: %3\n====== VietNam ======\n😷 Cases: %4\n💚 Recovered: %5\n💀 Deaths: %6\n📰 News: %7\nData is updated at: %8 (UTC +7)"
+	}
+}
+
+module.exports.run = async function({ api, event, getText }) {
+	const axios = global.nodemodule["axios"];
+	let data = (await axios.get('https://www.spermlord.ga/covid')).data;
+	return api.sendMessage(getText("return", data.thegioi.nhiem, data.thegioi.hoiphuc, data.thegioi.tuvong, data.vietnam.nhiem, data.vietnam.hoiphuc, data.vietnam.tuvong, data.tintuc, data.updatedAt), event.threadID, event.messageID);
+}

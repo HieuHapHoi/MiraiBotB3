@@ -25,8 +25,8 @@ module.exports.run = async function({ api, event }) {
 		});
 		const resault = await speedTest.getSpeed();
 		return api.sendMessage(
-			"=== Kết Quả ===" + 
-			"\n- Tốc độ mạng: " + resault + " Mbps",
+			"=== Result ===" + 
+			"\n- Speed: " + resault + " Mbps",
 			event.threadID, event.messageID
 		);
 	}
